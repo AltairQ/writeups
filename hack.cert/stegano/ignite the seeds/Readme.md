@@ -9,7 +9,7 @@ task.bmp
 Format flagi: ecsc{litery_cyfry_i_znaki_specjalne}.
 ```
 
-Dostajemy plik o rozszerzeniu `.bmp` ale nie da się go normalnie otworzyć. Możemy zajrzeć do środka hex edytorem, być może rozpoznamy z czym mamy do czynienia.
+Dostajemy plik o rozszerzeniu `.bmp` ale nie da się go normalnie otworzyć. Możemy zajrzeć do środka hex edytorem (lub zwykłym `xxd`), być może rozpoznamy z czym mamy do czynienia.
 
 ```
 $ xxd -i task.bmp | head -n 20
@@ -38,7 +38,7 @@ $ xxd -i task.bmp | head -n 20
 Niezbyt ciekawe, zobaczmy z drugiej strony:
 
 ```
-xxd task.bmp | tail -n 5
+$ xxd task.bmp | tail -n 5
 000bb830: 0000 0000 0000 0000 0000 0000 0000 0000  ................
 000bb840: 7352 4742 0000 0000 0000 0000 0000 0b13  sRGB............
 000bb850: 0000 0b13 000b b800 0000 0000 0018 0001  ................
@@ -55,7 +55,6 @@ $ file out.bmp
 out.bmp: PC bitmap, Windows 95/NT4 and newer format, 640 x 400 x 2
 ```
 
-`out.bmp` = 
 ![out.bmp](out.bmp)
 
 Reszta jest raczej oczywista.
