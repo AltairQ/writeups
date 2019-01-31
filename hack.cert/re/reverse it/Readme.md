@@ -20,31 +20,32 @@ Naturalnie pierwsze co robimy to wrzucamy plik do IDA:
 ![main](img/main.png)
 ![loop](img/loop.png)
 ![cmp](img/compare.png)
+
 Schemat jest bardzo prosty, po chwili analizy widzimy że jedyne co program robi to wczytuje od nas ciąg znaków, operuje na nim w pętli a następnie porównuje z jakimś statycznym ciągiem.
 
-Po szybkiej ręcznej dezasemblacji:
+Po szybkiej ręcznej dezasemblacji (najważniejszy fragment):
 ```c
 scanf("%50s", in_string);
-slen =  strlen(in_string);
+slen = strlen(in_string);
 
 int i = 0;
 
 while(i < slen)
 {
-in_string[i] = (byte)(in_string[i] ^ in_string[i+1]);
-i++;
+	in_string[i] = (byte)(in_string[i] ^ in_string[i+1]);
+	i++;
 }
 
 if (strcmp(in_string, asc_404723) == 0)
-	good_flag()
+	good_flag();
 else
-	bad_flag()
+	bad_flag();
 ```
 
 Trudno nazwać ten algorytm szyfrowaniem, jako że nie wymaga on żadnego sekretu. Każda litera xor-owana jest z jej następnikiem, można to sobie wyobrazić jako xor po literach na dwóch ciągach - oryginalnym i przesuniętym o jeden w prawo. Obserwacja jest dość prosta - ostatnia litera jest nienaruszona. Staje się ona "wytrychem", który pozwala na odszyfrowanie poprzedniej litery, a dzięki niej kolejnej i tak dalej, aż do odszyfrowania całości. Zerknijmy na zakodowaną wersję hasła:
 
 ```assembly
-rdata:00404723 asc_404723      db 7                    ; DATA XREF: _main:loc_40160B↑o
+.rdata:00404723 asc_404723      db 7                    ; DATA XREF: _main:loc_40160B↑o
 .rdata:00404724                 db  19h
 .rdata:00404725                 db  15h
 .rdata:00404726                 db  18h
@@ -86,4 +87,5 @@ print("".join([chr(i) for i in res[::-1]]))
 	
 ```
 
-Zadanie rozwiązane! Flaga: `pwn{crypto_AND_reverse}`.
+Zadanie rozwiązane!
+Flaga: `pwn{crypto_AND_reverse}`.
