@@ -49,7 +49,7 @@ $ xxd task.bmp | tail -n 5
 `MB` to `BM` od tyłu, co jest magiczną liczbą właśnie dla formatu BMP. Odwróćmy zatem cały plik.
 
 ```
-< task.bmp xxd -p -c1 | tac | xxd -p -r > out.bmp
+$ < task.bmp xxd -p -c1 | tac | xxd -p -r > out.bmp
 
 $ file out.bmp
 out.bmp: PC bitmap, Windows 95/NT4 and newer format, 640 x 400 x 2
