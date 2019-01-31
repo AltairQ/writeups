@@ -1,0 +1,25 @@
+rdata:00404723 asc_404723      db 7                    ; DATA XREF: _main:loc_40160B↑o
+.rdata:00404724                 db  19h
+.rdata:00404725                 db  15h
+.rdata:00404726                 db  18h
+.rdata:00404727                 db  11h
+.rdata:00404728                 db  0Bh
+.rdata:00404729                 db    9
+.rdata:0040472A                 db    4
+.rdata:0040472B                 db  1Bh
+.rdata:0040472C                 db  30h ; 0
+.rdata:0040472D                 db  1Eh
+.rdata:0040472E                 db  0Fh
+.rdata:0040472F                 db  0Ah
+.rdata:00404730                 db  1Bh
+.rdata:00404731                 db  2Dh ; -
+.rdata:00404732                 db  17h
+.rdata:00404733                 db  13h
+.rdata:00404734                 db  13h
+.rdata:00404735                 db  17h
+.rdata:00404736                 db    1
+.rdata:00404737                 db  16h
+.rdata:00404738                 db  18h
+.rdata:00404739                 db  7Dh ; }
+.rdata:0040473A                 db    0
+.rdata:0040473B                 db    0
