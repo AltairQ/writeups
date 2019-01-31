@@ -26,6 +26,7 @@ Missing opening bracket!
 ```
 
 Jak widać zachowuje się tak, jak się spodziewaliśmy. Szybkie wrzucenie w IDA pokazuje dość prosty schemat najbardziej interesującej funkcji:
+
 ![overview](img/graph%20overview.png)
 
 ```assembly
@@ -69,7 +70,7 @@ Chcielibyśmy już teraz nadpisać adres powrotu ale dalsza analiza pokazuje że
 
 ![exits](img/exits.png)
 
-Tylko poprawne zakończenie algorytmu prowadzi do powrotu, w przeciwnym razie uruchamiany jest `exit` więc podmiana adresu nic nie da. Problemem jest 32-bitowa zmienna `var_4` która reprezentuje bilans nawiasów otwierających i zamykających. Żeby algorytm stwierdził że nawiasowanie jest poprawne to w szczególności na końcu musi ona wynosić 0. Nie możemy po prostu wkleić bajtów zerowych w payload bo `gets` tego nie wczyta. Trik polega na tym że oprócz nadpisania surowej wartości bilans możemy jeszcze potem zmodyfikować podając nawiasy. Plan jest prosty - ustawmy bilans na `INT_MAX` i podajmy jeden nawias, żeby przekręcił się na 0.
+Tylko poprawne zakończenie (skrajnie prawy blok) algorytmu prowadzi do powrotu, w przeciwnym razie uruchamiany jest `exit` więc podmiana adresu nic nie da. Problemem jest 32-bitowa zmienna `var_4` która reprezentuje bilans nawiasów otwierających i zamykających. Żeby algorytm stwierdził że nawiasowanie jest poprawne to w szczególności na końcu musi ona wynosić 0. Nie możemy po prostu wkleić bajtów zerowych w payload bo `gets` tego nie wczyta. Trik polega na tym że oprócz nadpisania surowej wartości bilans możemy jeszcze potem zmodyfikować podając nawiasy. Plan jest prosty - ustawmy bilans na `INT_MAX` i podajmy jeden nawias, żeby przekręcił się na 0.
 
 Payload będzie miał następujący schemat
 ```
@@ -81,7 +82,7 @@ Znak zmiany linii zostanie zamieniony na bajt zerowy, więc adres będzie się z
 
 Bufor jest pod adresem `rbp-128`, po drodze jest jeszcze stare `rbp` (8 bajtów) więc potrzebujemy paddingu na 136 bajty, po tym już jest adres powrotu. Zatem ostateczny payload wygląda następująco:
 ```
-b'(' + b'\ff'*135 + '\xf6\x05\x40'
+b'(' + b'\xFF'*135 + '\xF6\x05\x40'
 ```
 
 Enter możemy sami wcisnąć.
