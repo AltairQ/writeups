@@ -7,6 +7,7 @@ Great Volos - god of magic is around you. Just look carefully.
 Format flagi: ecsc{litery_cyfry_i_znaki_specjalne}.
 ```
 ![volos](volos.png)
+
 Dostajemy tylko plik `volos.png` (widoczny powyżej). Odpalamy binwalka z opcją `-e` (czyli `extract`):
 ```
 $ binwalk -e volos.png
