@@ -16,3 +16,5 @@ It turns out, if you try and "use" a tile on the island, you can walk on water!
 ![walking on water](img/waterwalk.gif)
 
 Opening the chest in the dungeon gives you the flag.
+
+![flag](img/flag.png)
