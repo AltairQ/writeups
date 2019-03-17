@@ -36,6 +36,6 @@ print(pol)
 
 So, in essence we have some polynomial whose root `mod N` is our flag. Fortunately `N = p^k`, and `p` is known. That's where [Hensel's lifting lemma](https://en.wikipedia.org/wiki/Hensel%27s_lemma) comes into play - it turns out that given a root of a polynomial `mod p^k` you can easily calculate the unique root `mod p^(k+1)`. `p = 35671`, and so we can simply calculate the `mod` of the coefficients and plug the resultin polynomial `mod p` into something like WolframAlpha and get the initial roots - `25020` or `27020`. 
 
-I found [some Sage code](https://ask.sagemath.org/question/9860/solving-polynomial-equations-over-p-adic-fields/?answer=15332#post-id-15332) online (thanks dom!), I quickly modified it a bit (line 33) - the original code did not take the modulo of the intermediate results, so they grew rapidly, causing the computation to grind to a halt.
+I found [some Sage code](https://ask.sagemath.org/question/9860/solving-polynomial-equations-over-p-adic-fields/?answer=15332#post-id-15332) online (thanks dom!), I quickly modified it a bit [(`solve.sage:33`)](https://github.com/AltairQ/writeups/blob/master/Teaser%20CONFidence%20CTF%202019/Bro%20do%20you%20even%20lift/solve.sage) - the original code did not take the modulo of the intermediate results, so they grew rapidly, causing the computation to grind to a halt.
 
 The solution derived from initial root `27020` is `0x70347b54683474355f35306d335f68333476795f6c316674316e397d`, which in ASCII is `p4{Th4t5_50m3_h34vy_l1ft1n9}`.
