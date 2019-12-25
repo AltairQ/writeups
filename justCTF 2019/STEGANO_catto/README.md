@@ -50,7 +50,7 @@ def catmap(x,y, n):
 	return ((x+y) % n, (2*x+y) % n)
 ```
 
-As you can probably tell, the scripts use different coordinate systems. This is because PIL stores the image column-major, that is using `yx` order, therefore the `numpy` transformation operated on a transposed image. `Image.fromarray` method actually takes this into consideration, which is why I didn't notice any anomalies. This discrepancy prevented the vast majority of teams from finding the flag, essentially turning this chall into a guessing game.
+As you can probably tell, the scripts use different coordinate systems. This is because PIL stores the image using the `yx` order, therefore the `numpy` transformation operated on a transposed image. `Image.fromarray` method actually takes this into consideration, which is why I didn't notice any anomalies. This discrepancy prevented the vast majority of teams from finding the flag, essentially turning this chall into a guessing game.
 
 ### Main takeaway:
 * Don't use the same script for generating and solving challenges.
